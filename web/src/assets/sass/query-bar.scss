@@ -1,0 +1,25 @@
+.query-bar {
+    .el-col {
+        display: flex;
+
+        label {
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: right;
+        }
+
+        .el-input {
+            width: auto;
+            flex-grow: 1;
+        }
+
+        button {
+            margin: 0px 0px 0px 15px;
+        }
+    }
+
+    &.margin {
+        margin: 10px 0px;
+    }
+}
