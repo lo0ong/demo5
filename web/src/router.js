@@ -18,6 +18,7 @@ import Role from '@/view/system/Role.vue';
 import Channel from '@/view/media/Channel.vue';
 import Media from '@/view/media/Media.vue';
 import Topic from '@/view/media/Topic.vue';
+import PlayBill from '@/view/media/PlayBill.vue';
 
 
 //图文
@@ -31,7 +32,7 @@ import ReviewBefore from '@/view/column/ReviewBefore.vue';
 const routes = [
   { path: '/',redirect: '/login'},
   { path: '/login', component: Login },
-  
+  { path: '/playbill', component: PlayBill,name: "playbill" },
   { path: '/', 
     component: Home,
     children:[
@@ -46,6 +47,7 @@ const routes = [
       { path: '/channel', component: Channel },
       { path: '/media', component: Media },
       { path: '/topic', component: Topic },
+
 
       //图文
       { path: '/articleDraft', component: ArticleDraft },

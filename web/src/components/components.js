@@ -10,6 +10,8 @@ import DoContentPagination from "./DoContentPagination.vue";
 import DoTreeDept from "./DoTreeDept.vue";
 import DoTreeDeptSelect from './DoTreeDeptSelect.vue';
 
+import DoTreeChannel from "./DoTreeChannel.vue"
+
 export default (Vue)=>{
   Vue.component('DoHeader',DoHeader);
   Vue.component('DoFooter',DoFooter);
@@ -22,5 +24,6 @@ export default (Vue)=>{
   Vue.component('DoTreeDept',DoTreeDept);
   Vue.component('DoTreeDeptSelect',DoTreeDeptSelect);
 
+  Vue.component('DoTreeChannel',DoTreeChannel);
 }
 
