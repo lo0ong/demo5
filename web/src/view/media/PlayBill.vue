@@ -2,16 +2,12 @@
   <div>
     <div class="title">
       <span> {{msg}}·节目单</span>
-      <el-date-picker class="searchdate" v-model="value" align="right" type="date" placeholder="选择日期" 
-       format="yyyy 年 MM 月 dd 日"
-      value-format="yyyy 年 MM 月 dd 日"
-      :picker-options="pickerOptions1"
-      >
+      <el-date-picker class="searchdate" v-model="value" align="right" type="date" placeholder="选择日期" @change="getSelectDate"  format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions1">
       </el-date-picker>
     </div>
     <div>
       <el-breadcrumb separator="|">
-        <el-breadcrumb-item v-for="date in selectdate" :key="date">
+        <el-breadcrumb-item v-for="date in selectdate" :key="date.index">
           <el-button @click="handledate(date)">{{date}}</el-button>
         </el-breadcrumb-item>
       </el-breadcrumb>
@@ -55,7 +51,7 @@
           <el-input readonly v-model="addForm.date"></el-input>
         </el-form-item>
         <el-form-item label="开始时间" prop="startTime">
-          <el-input  v-model="addForm.startTime"></el-input>
+          <el-input v-model="addForm.startTime"></el-input>
         </el-form-item>
         <el-form-item label="结束时间" prop="endTime">
           <el-input v-model="addForm.endTime"></el-input>
@@ -98,7 +94,6 @@ export default {
       msg: this.$route.query.name,
       msg2: "",
       dialogFormVisible: false,
-      currentdate: new Date(),
       addForm: {},
       rules: {
         startTime: [
@@ -119,7 +114,7 @@ export default {
         }
       ],
       pickerOptions1: {
-       shortcuts: [
+        shortcuts: [
           {
             text: "今天",
             onClick(picker) {
@@ -136,19 +131,33 @@ export default {
           }
         ]
       },
-      value: "",
-      selectdate: [
-        20181001,
-        20181002,
-        20181003,
-        19900205,
-        19900830,
-        20181006,
-        20181007
-      ]
+      value: new Date(),
+      selectdate: []
     };
   },
   methods: {
+    getSelectDate() {
+      const d = [
+        this.GetDateStr(-3),
+        this.GetDateStr(-2),
+        this.GetDateStr(-1),
+        this.GetDateStr(0),
+        this.GetDateStr(1),
+        this.GetDateStr(2),
+        this.GetDateStr(3)
+      ];
+      this.selectdate = d;
+      console.log(this.selectdate);
+    },
+    GetDateStr(AddDayCount) {
+      var dd = new Date(this.value);
+      dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期
+      var y = dd.getFullYear();
+      var m =
+        dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1; //获取当前月份的日期，不足10补0
+      var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate(); //获取当前几号，不足10补0
+      return y + "年" + m + "月" + d + "日";
+    },
     //状态数据转换
     formatRole: function(row, column) {
       return row.status == "1" ? "直播" : row.status == "0" ? "预告" : "回看";
@@ -156,7 +165,7 @@ export default {
     //新增界面
     addChannel() {
       if (this.dialogFormVisible == false) {
-        this.addForm.date = this.currentdate
+        this.addForm.date = this.currentdate;
         return (this.dialogFormVisible = true);
       } else {
         console.log(this.dialogFormVisible);
@@ -169,7 +178,11 @@ export default {
     },
     handledate(date) {
       this.currentdate = date;
-    }
+    },
+    handleSelectionChange() {}
+  },
+  created() {
+    this.getSelectDate();
   }
 };
 </script>
