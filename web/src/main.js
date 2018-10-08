@@ -19,10 +19,13 @@ Vue.use(http);
 import global_ from '@/tools/global.js';
 Vue.prototype.global = global_;
 
+import store from './vuex/store'
+
 Vue.config.productionTip = false;
 
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

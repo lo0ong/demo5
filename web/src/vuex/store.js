@@ -6,6 +6,7 @@ import dictItem from './dictItem';
 import dept from './dept';
 import role from './role';
 import user from './user';
+import media from './media';
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
         dept:dept,
         role:role,
         user:user,
+        media:media
     }
 });
 

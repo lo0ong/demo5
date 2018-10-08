@@ -1,6 +1,6 @@
 <template>
   <div class="do-tree-dept">
-    <el-tree node-key="id" highlight-current :data="data" :props="defaultProps" :expand-on-click-node="false" default-expand-all>
+    <el-tree node-key="id" highlight-current :data="this.$store.state.media.channelTreeData" :props="defaultProps" :expand-on-click-node="false" default-expand-all>
       <span slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span v-show="node.level==1">
@@ -33,6 +33,9 @@
         <el-form-item label="目录名称" prop="subname">
           <el-input v-model="addForm.subname"></el-input>
         </el-form-item>
+        <el-form-item label="序号" prop="sequence">
+          <el-input v-model="addForm.sequence"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="confirmAdd('addForm')">确 认</el-button>
           <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -51,6 +54,9 @@
         </el-form-item>
         <el-form-item label="目录名称" prop="name">
           <el-input v-model="editForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="序号" prop="sequence">
+          <el-input v-model="editForm.sequence"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="confirmEdit('editForm')">确认修改</el-button>
@@ -82,13 +88,13 @@ export default {
       buttonVisit: "0",
       dialogFormVisible: false,
       editFormVisible: false,
-      data: [],
       addForm: {
         id: "",
         name: "",
         level: "",
         subname: ""
       },
+
       editForm: {},
       rules: {
         subname: [
@@ -98,117 +104,22 @@ export default {
       defaultProps: {
         children: "childs",
         label: "name"
-      },
-      alldata: {
-        resultCount: 1,
-        resultData: [
-          {
-            id: 1,
-            name: "频道目录",
-            level: 1,
-            sequence: 1,
-            fatherId: null,
-            fatherName: "广播",
-            childs: [
-              {
-                id: 2,
-                name: "电视",
-                level: 2,
-                sequence: 1,
-                fatherId: null,
-                fatherName: "广播",
-                childs: []
-              },
-              {
-                id: 3,
-                name: "广播",
-                level: 2,
-                sequence: 2,
-                fatherId: null,
-                fatherName: "广播",
-                childs: [
-                  {
-                    id: 4,
-                    name: "央视",
-                    level: 3,
-                    sequence: 1,
-                    fatherId: null,
-                    fatherName: "广播",
-                    childs: []
-                  },
-                  {
-                    id: 5,
-                    name: "卫视",
-                    level: 3,
-                    sequence: 2,
-                    fatherId: null,
-                    fatherName: "广播",
-                    childs: []
-                  },
-                  {
-                    id: 6,
-                    name: "地方",
-                    level: 3,
-                    sequence: 3,
-                    fatherId: null,
-                    fatherName: "广播",
-                    childs: []
-                  },
-                  {
-                    id: 7,
-                    name: "央视",
-                    level: 3,
-                    sequence: 1,
-                    fatherId: null,
-                    fatherName: "广播",
-                    childs: []
-                  },
-                  {
-                    id: 8,
-                    name: "卫视",
-                    level: 3,
-                    sequence: 2,
-                    fatherId: null,
-                    fatherName: "广播",
-                    childs: []
-                  },
-                  {
-                    id: 9,
-                    name: "地方",
-                    level: 3,
-                    sequence: 3,
-                    fatherId: null,
-                    fatherName: "广播",
-                    childs: []
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        resultCode: "000",
-        resultMsg: "调用成功！"
       }
     };
   },
   methods: {
     getData() {
-      //   let api = "static/data/treechannel.json";
-      //   this.$http.get(api).then(response => {
-      //     console.log(response);
-      //     // this.$store.commit('setDeptTreeData',response.data);
-      //   });
-      this.data = this.alldata.resultData;
-      console.log(this.data);
-      return this.data;
+      let api = "http://10.247.8.34:8080/media/catalog/getcatalogtree";
+      this.$http.get(api).then(response => {
+        this.$store.commit("setChannelTreeData", [response.data]);
+      });
+      this.data = [this.resultData];
     },
     //显示菜单编辑按钮
     editMenu() {
       if (this.buttonVisit == "0") {
-        console.log(this.buttonVisit);
         return (this.buttonVisit = "1");
       } else {
-        console.log(this.buttonVisit);
         return (this.buttonVisit = "0");
       }
     },
@@ -241,6 +152,7 @@ export default {
     nodeEdit(n, d) {
       if (this.editFormVisible == false) {
         this.editForm = d;
+        console.log(d);
         return (this.editFormVisible = true);
       } else {
         console.log("error submit!!");
